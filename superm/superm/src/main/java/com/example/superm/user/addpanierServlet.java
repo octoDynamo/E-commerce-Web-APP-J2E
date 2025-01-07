@@ -1,7 +1,9 @@
-package com.example.superm;
+package com.example.superm.user;
 
 import DataAccessObject.CommandeDAO;
 import Entity.Commande;
+import com.example.superm.Command;
+import com.example.superm.UserNow;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

@@ -1,4 +1,4 @@
-package com.example.superm;
+package com.example.superm.user;
 
 import DataAccessObject.UtilisateurDAO;
 import Entity.Utilisateur;
