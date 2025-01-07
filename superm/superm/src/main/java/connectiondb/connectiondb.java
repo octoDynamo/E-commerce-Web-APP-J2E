@@ -14,7 +14,7 @@ public class connectiondb {
             // Set the connection string
             String url = "jdbc:mysql://127.0.0.1:3306/superm?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
             String user = "root";
-            String password = "admin";
+            String password = "captain123.";
 
             // Create the connection object
             conn = DriverManager.getConnection(url, user, password);
