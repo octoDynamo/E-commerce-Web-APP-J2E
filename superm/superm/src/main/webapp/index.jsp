@@ -1,9 +1,10 @@
-<%@ page import="com.example.superm.UserNow" %>
 <%@ page import="DataAccessObject.ProduitDAO" %>
 <%@ page import="Entity.Produit" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.example.superm.UserNow" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     List<Produit> produitList = new ArrayList<>();
@@ -79,6 +80,7 @@
             display: flex;
             gap: 2rem;
             align-items: center;
+            float: right;
         }
 
         .nav-link {
@@ -241,6 +243,9 @@
         <div class="nav-links">
             <a href="index.jsp" class="nav-link">Accueil</a>
             <a href="panier.jsp" class="nav-link">Panier</a>
+            <% if (UserNow.getRole() == 1) { %>
+            <a href="admin/dashboard.jsp" class="nav-link">Admin Dashboard</a>
+            <% } %>
             <a href="login.jsp" class="nav-link">
                 <% if (UserNow.getRole()!=0) { %>
                 Déconnexion
@@ -249,8 +254,8 @@
                 <% } %>
             </a>
             <span class="nav-link">
-                    <%= UserNow.getUser().getNom()+" "+UserNow.getUser().getPrenom() %>
-                </span>
+                <%= UserNow.getUser().getNom()+" "+UserNow.getUser().getPrenom() %>
+            </span>
         </div>
     </div>
 </nav>
