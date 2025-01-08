@@ -14,6 +14,16 @@ public class ProduitDAO {
         this.connection = connectiondb.getConnection();
     }
 
+    // Method to delete a product by ID
+    public void deleteById(int id) throws SQLException {
+        String sql = "DELETE FROM produits WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Other methods in ProduitDAO remain unchanged...
     public int create(Produit produit) throws SQLException {
         String sql = "INSERT INTO produits (nom, description, prix, image) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -77,12 +87,15 @@ public class ProduitDAO {
         }
     }
 
-    public void delete(int id) throws SQLException {
-        String sql = "DELETE FROM produits WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+    public int getCount() throws SQLException {
+        String sql = "SELECT COUNT(*) AS count FROM produits";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
         }
+        return 0;
     }
 
     private Produit mapRowToProduit(ResultSet rs) throws SQLException {

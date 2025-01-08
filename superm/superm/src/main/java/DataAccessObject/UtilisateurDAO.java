@@ -3,10 +3,7 @@ package DataAccessObject;
 import Entity.Utilisateur;
 import connectiondb.connectiondb;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class UtilisateurDAO {
         this.connection = connectiondb.getConnection();
     }
 
-    // Add user with dynamic role
+    // Add a new user with a dynamic role
     public void add(Utilisateur utilisateur) throws SQLException {
         String query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -38,13 +35,7 @@ public class UtilisateurDAO {
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Utilisateur utilisateur = new Utilisateur();
-                utilisateur.setId(rs.getInt("id"));
-                utilisateur.setNom(rs.getString("nom"));
-                utilisateur.setPrenom(rs.getString("prenom"));
-                utilisateur.setEmail(rs.getString("email"));
-                utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
-                utilisateur.setRole(rs.getInt("role"));
+                Utilisateur utilisateur = mapRowToUtilisateur(rs);
                 utilisateurs.add(utilisateur);
             }
         }
@@ -59,13 +50,7 @@ public class UtilisateurDAO {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    utilisateur = new Utilisateur();
-                    utilisateur.setId(rs.getInt("id"));
-                    utilisateur.setNom(rs.getString("nom"));
-                    utilisateur.setPrenom(rs.getString("prenom"));
-                    utilisateur.setEmail(rs.getString("email"));
-                    utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
-                    utilisateur.setRole(rs.getInt("role"));
+                    utilisateur = mapRowToUtilisateur(rs);
                 }
             }
         }
@@ -81,16 +66,59 @@ public class UtilisateurDAO {
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    utilisateur = new Utilisateur();
-                    utilisateur.setId(rs.getInt("id"));
-                    utilisateur.setNom(rs.getString("nom"));
-                    utilisateur.setPrenom(rs.getString("prenom"));
-                    utilisateur.setEmail(rs.getString("email"));
-                    utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
-                    utilisateur.setRole(rs.getInt("role"));
+                    utilisateur = mapRowToUtilisateur(rs);
                 }
             }
         }
+        return utilisateur;
+    }
+
+    // Count total users
+    public int getCount() throws SQLException {
+        String query = "SELECT COUNT(*) AS count FROM utilisateurs";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        }
+        return 0;
+    }
+
+    // Delete user by ID
+    public void deleteById(int id) throws SQLException {
+        String query = "DELETE FROM utilisateurs WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Search users by name
+    public List<Utilisateur> searchByName(String name) throws SQLException {
+        String query = "SELECT * FROM utilisateurs WHERE nom LIKE ?";
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, "%" + name + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Utilisateur utilisateur = mapRowToUtilisateur(rs);
+                    utilisateurs.add(utilisateur);
+                }
+            }
+        }
+        return utilisateurs;
+    }
+
+    // Map a ResultSet row to a Utilisateur object
+    private Utilisateur mapRowToUtilisateur(ResultSet rs) throws SQLException {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setId(rs.getInt("id"));
+        utilisateur.setNom(rs.getString("nom"));
+        utilisateur.setPrenom(rs.getString("prenom"));
+        utilisateur.setEmail(rs.getString("email"));
+        utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+        utilisateur.setRole(rs.getInt("role"));
         return utilisateur;
     }
 }
