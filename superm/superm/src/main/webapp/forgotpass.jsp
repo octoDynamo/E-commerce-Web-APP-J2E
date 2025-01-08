@@ -25,7 +25,7 @@
            		   		<input type="text" class="input">
            		   </div>
            		</div>
-            	<a href="user/login.jsp">Back to login page ?</a>
+            	<a href="login.jsp">Back to login page ?</a>
             	<input type="submit" class="btn" value="Send verification">
             </form>
         </div>

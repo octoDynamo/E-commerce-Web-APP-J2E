@@ -40,12 +40,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="user/panier.jsp" role="button" aria-expanded="false">
+                    <a class="nav-link " href="panier.jsp" role="button" aria-expanded="false">
                         Panier
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="user/login.jsp" role="button" aria-expanded="false">
+                    <a class="nav-link " href="login.jsp" role="button" aria-expanded="false">
                         <% if (UserNow.getRole()!=0){%>
                         Logout
                         <%} else{%>
@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="user/login.jsp" aria-expanded="false">
+                    <a class="nav-link " href="login.jsp" aria-expanded="false">
                         <h4><%= UserNow.getUser().getNom()+" "+UserNow.getUser().getPrenom()%></h4>
                     </a>
                 </li>
