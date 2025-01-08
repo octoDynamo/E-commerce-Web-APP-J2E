@@ -1,100 +1,318 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard - admin</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/Table-With-Search-search-table.css">
-    <link rel="stylesheet" href="assets/css/Table-With-Search.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrateur - ElectroShop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-glow: #4f46e5;
+            --secondary-glow: #7c3aed;
+            --background-dark: #0f172a;
+            --sidebar-bg: rgba(79, 70, 229, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(to right, var(--background-dark), #1e293b);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .brand-icon {
+            font-size: 1.5rem;
+            color: var(--primary-glow);
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .top-bar {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        .file-upload {
+            padding: 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-glow);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: var(--text-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                position: fixed;
+                z-index: 1;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
-
-<body id="page-top">
-<div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(27,215,136);color: rgb(0,0,0);">
-        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-landmark" style="color: #000000;"></i></div>
-            <div class="sidebar-brand-text mx-3"><span style="color: #000000;">admin</span></div>
-        </a>
-            <hr class="sidebar-divider my-0">
-            <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" href="index.jsp"><i class="fas fa-tachometer-alt"></i><span style="color: rgba(0,0,0,0.8);">Dashboard</span></a><a class="nav-link" href="error.jsp" style="color: #000000;"><i class="fas fa-tachometer-alt"></i><span>utilisateur</span></a><a class="nav-link" href="error.jsp" style="color: #000000;"><i class="fas fa-tachometer-alt"></i><span><span style="font-weight: normal !important; background-color: rgb(27, 215, 136);">Categorie </span></span></a><a class="nav-link" href="error.jsp" style="color: #000000;"><i class="fas fa-tachometer-alt"></i><span><span style="font-weight: normal !important; background-color: rgb(27, 215, 136);">ProduitCategorie </span></span></a><a class="nav-link" href="error.jsp" style="color: #000000;"><i class="fas fa-tachometer-alt"></i><span><span style="font-weight: normal !important; background-color: rgb(27, 215, 136);">Commande</span></span></a><a class="nav-link" href="error.jsp" style="color: #000000;"><i class="fas fa-tachometer-alt"></i><span><span style="font-weight: normal !important; background-color: rgb(27, 215, 136);">Produit </span></span></a></li>
-            </ul>
-            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+<body>
+<div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fas fa-landmark brand-icon"></i>
+            <span class="brand-text">Admin</span>
         </div>
-    </nav>
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content" style="color: #000000;">
-            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                    <ul class="navbar-nav flex-nowrap ms-auto">
-                        <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="me-auto navbar-search w-100">
-                                    <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                        <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
 
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="index.jsp" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="users.jsp" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Utilisateurs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.jsp" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    <span>Catégories</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="products.jsp" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    <span>Produits</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.jsp" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Commandes</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
 
-                    </ul>
-                </div>
-            </nav>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-bar">
+            <h1>Ajouter un produit</h1>
+            <div class="user-menu">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+
+        <div class="form-container">
             <form action="ProductServlet" method="post" enctype="multipart/form-data">
-
-
-                <div class="col-md-6 offset-md-3 mt-5">
-                    <br>
-                    <form accept-charset="UTF-8" action="https://getform.io/f/{your-form-endpoint-goes-here}" method="POST" enctype="multipart/form-data" target="_blank">
-                        <div class="form-group">
-                            <label for="exampleInputName">Nom de produit</label>
-                            <input type="text" name="name" id="name" class="form-control" id="exampleInputName" placeholder="Enter le nom de produit" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" required="required">Description de produit</label>
-                            <input type="text" name="description" id="description" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter la description de produit">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" required="required">Prix</label>
-                            <input type="number" name="x" id="price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="prix">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" required="required">Quantite</label>
-                            <input type="number" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="la quantite minium c'est 1">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Categorie</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="platform" required="required">
-                                <option>Electronic</option>
-                                <option>Vetement</option>
-                                <option>Sport</option>
-                            </select>
-                        </div>
-                        <hr>
-                        <div class="form-group mt-3">
-                            <label class="mr-2">telecharger image de produit:</label>
-                            <input type="file" name="image" id="image">
-                        </div>
-                        <hr>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                <div class="form-group">
+                    <label for="name">Nom du produit</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Prix</label>
+                    <input type="number" id="price" name="price" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantité</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Catégorie</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="electronic">Électronique</option>
+                        <option value="clothing">Vêtements</option>
+                        <option value="sport">Sport</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image du produit</label>
+                    <div class="file-upload">
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Enregistrer le produit
+                </button>
             </form>
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © admin 2023</span></div>
-                </div>
-            </footer>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/Table-With-Search-search-table.js"></script>
-    <script src="assets/js/theme.js"></script>
-</body>
+        </div>
 
+        <footer class="footer">
+            <p>&copy; 2025 ElectroShop Admin. Tous droits réservés.</p>
+        </footer>
+    </main>
+</div>
+</body>
 </html>
