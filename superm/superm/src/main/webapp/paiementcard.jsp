@@ -11,90 +11,258 @@
     }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Page</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- Custom CSS -->
+    <title>Paiement - ElectroShop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-glow: #4f46e5;
+            --secondary-glow: #7c3aed;
+            --background-start: #0f172a;
+            --background-end: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f7f3fc;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, var(--background-start), var(--background-end));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .btn-success {
-            background-color: #9b59b6;
+
+        .payment-card {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow:
+                    0 0 20px rgba(79, 70, 229, 0.15),
+                    0 0 40px rgba(79, 70, 229, 0.1);
+            position: relative;
+            overflow: hidden;
+            padding: 2.5rem;
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            filter: blur(40px);
+            opacity: 0.15;
+        }
+
+        .glow-top-right {
+            top: -100px;
+            right: -100px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+        }
+
+        .glow-bottom-left {
+            bottom: -100px;
+            left: -100px;
+            background: radial-gradient(circle, var(--secondary-glow) 0%, transparent 70%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .total {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .total strong {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 2.3rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus + i {
+            color: var(--primary-glow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+            color: var(--text-primary);
             border: none;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
         }
-        .btn-success:hover {
-            background-color: #8e44ad;
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
         }
-        .form-control {
-            border: 1px solid #9b59b6;
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #8e44ad;
+
+        .form-group {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
         }
-        .form-label {
-            color: #6c757d;
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .submit-btn { animation: fadeInUp 0.5s ease-out 0.4s forwards; opacity: 0; }
+
+        @media (max-width: 640px) {
+            .payment-card {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-<section class="p-4 p-md-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-5">
-            <div class="card rounded-3">
-                <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <h3 style="color: #8e44ad;">Payment</h3>
-                        <h6>Total: <span style="color: #8e44ad; font-weight: bold;"> <%=sum%> MAD</span></h6>
-                    </div>
-                    <form>
-                        <p class="fw-bold mb-4">Add New Card:</p>
+<div class="payment-card">
+    <div class="glow-effect glow-top-right"></div>
+    <div class="glow-effect glow-bottom-left"></div>
 
-                        <div class="form-outline mb-4">
-                            <input type="text" id="cardholderName" class="form-control form-control-lg" placeholder="John Doe" required />
-                            <label class="form-label" for="cardholderName">Cardholder's Name</label>
-                        </div>
-
-                        <div class="row mb-4">
-                            <div class="col-7">
-                                <div class="form-outline">
-                                    <input type="text" id="cardNumber" class="form-control form-control-lg" placeholder="1234 5678 1234 5678" required />
-                                    <label class="form-label" for="cardNumber">Card Number</label>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="form-outline">
-                                    <input type="text" id="expiryDate" class="form-control form-control-lg" placeholder="MM/YYYY" required />
-                                    <label class="form-label" for="expiryDate">Expire</label>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-outline">
-                                    <input type="text" id="cvv" class="form-control form-control-lg" placeholder="Cvv" required />
-                                    <label class="form-label" for="cvv">Cvv</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Validate Payment</button>
-                    </form>
-                </div>
-            </div>
+    <div class="header">
+        <h2>Paiement Sécurisé</h2>
+        <div class="total">
+            Total: <strong><%= String.format("%.2f", sum) %> MAD</strong>
         </div>
     </div>
-</section>
-<!-- Bootstrap JavaScript -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <form action="" method="post">
+        <div class="form-group">
+            <label for="cardName">Nom sur la carte</label>
+            <input type="text" id="cardName" class="input-field" placeholder="Ex: Jean Dupont" required>
+            <i class="fas fa-user"></i>
+        </div>
+
+        <div class="form-group">
+            <label for="cardNumber">Numéro de carte</label>
+            <input type="text" id="cardNumber" class="input-field" placeholder="1234 5678 9012 3456" required>
+            <i class="fas fa-credit-card"></i>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cardNumber">Date d'expiration</label>
+                <input type="text" id="expiry" class="input-field" placeholder="MM/AA" required>
+                <i class="fas fa-calendar"></i>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" class="input-field" placeholder="123" required>
+                <i class="fas fa-lock"></i>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-shield-alt"></i> Payer maintenant
+        </button>
+    </form>
+</div>
 </body>
 </html>

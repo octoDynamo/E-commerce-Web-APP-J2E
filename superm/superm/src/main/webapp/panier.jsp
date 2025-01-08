@@ -8,81 +8,237 @@
     double sum = 0;
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panier</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Mon Panier - ElectroShop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-glow: #4f46e5;
+            --secondary-glow: #7c3aed;
+            --background-start: #0f172a;
+            --background-end: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f8f0fc;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, var(--background-start), var(--background-end));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-primary);
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         header {
-            background: linear-gradient(90deg, #d8bfd8, #dda0dd);
+            text-align: center;
+            padding: 3rem 0;
+            position: relative;
         }
-        header h1 {
-            font-size: 2rem;
-            font-weight: bold;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
         }
-        .btn-danger {
-            color: #fff;
-            background-color: #dda0dd;
-            border-color: #c080c0;
-            font-weight: bold;
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow:
+                    0 0 20px rgba(79, 70, 229, 0.15),
+                    0 0 40px rgba(79, 70, 229, 0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-danger:hover {
-            background-color: #c080c0;
-            border-color: #a060a0;
-        }
-        .btn-primary {
-            background-color: #dda0dd;
-            border-color: #c080c0;
-        }
-        .btn-primary:hover {
-            background-color: #c080c0;
-            border-color: #a060a0;
-        }
-        .btn-success {
-            background-color: #dda0dd;
-            border-color: #c080c0;
-        }
-        .btn-success:hover {
-            background-color: #c080c0;
-            border-color: #a060a0;
-        }
-        .table thead {
-            background-color: #dda0dd;
-            color: white;
-        }
+
         .card-header {
-            background-color: #dda0dd;
-            color: white;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+            color: white;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .total-section {
+            text-align: right;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            filter: blur(40px);
+            opacity: 0.15;
+        }
+
+        .top-right {
+            top: -100px;
+            right: -100px;
+        }
+
+        .bottom-left {
+            bottom: -100px;
+            left: -100px;
+            background: radial-gradient(circle, var(--secondary-glow) 0%, transparent 70%);
+        }
+
         footer {
-            background-color: #f8f0fc;
-            border-top: 2px solid #dda0dd;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .payment-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <header>
+        <h1>Mon Panier</h1>
+    </header>
 
-<!-- Header Section -->
-<header class="container-fluid text-white p-3 text-center">
-    <h1>Votre Panier</h1>
-</header>
+    <div class="card">
+        <div class="glow-effect top-right"></div>
+        <div class="glow-effect bottom-left"></div>
 
-<!-- Main Container -->
-<div class="container mt-5">
-    <!-- Product Table -->
-    <div class="card shadow-sm">
-        <div class="card-header text-white">
-            <h4 class="mb-0">Détails du Panier</h4>
+        <div class="card-header">
+            <h2 class="card-title">Détails du Panier</h2>
         </div>
+
         <div class="card-body">
-            <table class="table table-hover">
+            <table>
                 <thead>
                 <tr>
                     <th>Produit</th>
@@ -99,11 +255,13 @@
                 <tr>
                     <td><%= new ProduitDAO().getById(cmd.getProduit_id()).getNom() %></td>
                     <td><%= cmd.getQuantite() %></td>
-                    <td><%= String.format("%.2f", prix) %></td>
+                    <td><%= String.format("%.2f", prix) %> MAD</td>
                     <td>
                         <form method="post" action="deleteCommande.jsp">
                             <input type="hidden" name="id" value="<%= cmd.getId() %>">
-                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Supprimer
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -113,30 +271,33 @@
         </div>
     </div>
 
-    <!-- Summary and Payment Section -->
-    <div class="mt-4 text-right">
-        <h5 class="mb-4">Total : <strong><%= String.format("%.2f", sum) %> MAD</strong></h5>
-        <form action="paiementcard.jsp" method="post" class="d-inline-block">
-            <button class="btn btn-primary">Paiement par Carte (MAD)</button>
-        </form>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="d-inline-block">
-            <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="business" value="workoutaiman@hotmail.com">
-            <input type="hidden" name="item_name" value="aimht">
-            <input type="hidden" name="amount" value="<%= String.format("%.2f", sum / 10) %>">
-            <input type="hidden" name="currency_code" value="EUR">
-            <button type="submit" class="btn btn-success">Payez avec PayPal</button>
-        </form>
+    <div class="total-section">
+        <div class="total-amount">
+            Total : <strong><%= String.format("%.2f", sum) %> MAD</strong>
+        </div>
+        <div class="payment-buttons">
+            <form action="paiementcard.jsp" method="post">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-credit-card"></i> Paiement par Carte
+                </button>
+            </form>
+
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="workoutaiman@hotmail.com">
+                <input type="hidden" name="item_name" value="aimht">
+                <input type="hidden" name="amount" value="<%= String.format("%.2f", sum / 10) %>">
+                <input type="hidden" name="currency_code" value="EUR">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fab fa-paypal"></i> Payer avec PayPal
+                </button>
+            </form>
+        </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 ElectroShop. Tous droits réservés.</p>
+    </footer>
 </div>
-
-<!-- Footer Section -->
-<footer class="container-fluid text-center py-3 mt-5">
-    <p class="mb-0">&copy; 2025 Votre Boutique. Tous droits réservés.</p>
-</footer>
-
-<!-- Bootstrap JavaScript -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
