@@ -1,38 +1,50 @@
 package com.example.superm.admin;
+
+import DataAccessObject.UtilisateurDAO;
+import Entity.Utilisateur;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
-import com.example.superm.UserNow;
-import DataAccessObject.UtilisateurDAO;
+import java.util.List;
 
-@WebServlet(name = "AdminUser", value = "/admin/users")
+@WebServlet(name = "AdminUserServlet", value = "/admin/users")
 public class AdminUserServlet extends HttpServlet {
+
     private UtilisateurDAO utilisateurDAO;
 
+    @Override
     public void init() {
         utilisateurDAO = new UtilisateurDAO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        if(UserNow.getRole() != 1) {
-            response.sendRedirect("../login.jsp");
-            return;
-        }
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            listUsers(request, response);
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
+            List<Utilisateur> utilisateurs = utilisateurDAO.getAll();
+            request.setAttribute("utilisateurs", utilisateurs);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/users.jsp");
+            dispatcher.forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendRedirect("/error.jsp");
         }
     }
 
-    private void listUsers(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        request.setAttribute("users", utilisateurDAO.getAll());
-        request.getRequestDispatcher("/admin/users.jsp").forward(request, response);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        try {
+            if ("delete".equals(action)) {
+                int userId = Integer.parseInt(request.getParameter("userId"));
+                utilisateurDAO.deleteById(userId);
+            }
+            response.sendRedirect("/admin/users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendRedirect("/error.jsp");
+        }
     }
 }
