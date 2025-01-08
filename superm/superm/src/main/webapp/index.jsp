@@ -21,10 +21,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>supermarket</title>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -40,12 +40,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="panier.jsp" role="button" aria-expanded="false">
+                    <a class="nav-link " href="user/panier.jsp" role="button" aria-expanded="false">
                         Panier
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="login.jsp" role="button" aria-expanded="false">
+                    <a class="nav-link " href="user/login.jsp" role="button" aria-expanded="false">
                         <% if (UserNow.getRole()!=0){%>
                         Logout
                         <%} else{%>
@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="login.jsp" aria-expanded="false">
+                    <a class="nav-link " href="user/login.jsp" aria-expanded="false">
                         <h4><%= UserNow.getUser().getNom()+" "+UserNow.getUser().getPrenom()%></h4>
                     </a>
                 </li>
@@ -72,7 +72,7 @@
         <div class="row">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div>
-                    <div class="py-10 px-8 rounded-3" style="background: url(../assets/img/grocery-banner.png)no-repeat;background-size: cover;background-position: center;padding: 20px;">
+                    <div class="py-10 px-8 rounded-3" style="background: url(assets/img/grocery-banner.png)no-repeat;background-size: cover;background-position: center;padding: 20px;">
                         <div>
                             <h3 class="fw-bold mb-1">Fruits &amp; Vegetables </h3>
                             <p class="mb-4">Get Upto <span class="fw-bold">30%</span> Off</p><a class="btn btn-dark" role="button" href="#!">Shop Now</a>
@@ -82,7 +82,7 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div>
-                    <div class="py-10 px-8 rounded-3" style="background: url(../assets/img/grocery-banner-2.jpg)no-repeat;background-size: cover;background-position: center;padding: 20px;">
+                    <div class="py-10 px-8 rounded-3" style="background: url(assets/img/grocery-banner-2.jpg)no-repeat;background-size: cover;background-position: center;padding: 20px;">
                         <div>
                             <h3 class="fw-bold mb-1">Freshly Baked Buns </h3>
                             <p class="mb-4">Get Upto <span class="fw-bold">25%</span> Off</p><a class="btn btn-dark" role="button" href="#!">Shop Now</a>
@@ -137,7 +137,7 @@
         <div class="col-md-6"><span class="text-muted small">Copyright 2022 © superm</span></div>
     </div>
 </div>
-<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
