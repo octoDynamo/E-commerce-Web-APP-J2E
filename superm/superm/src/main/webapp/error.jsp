@@ -189,7 +189,7 @@
     <h1>Page non trouvée</h1>
 
     <p class="message">
-        <b>Mahdi & Hajar :</b> On a fait un effort et donné tout ce qu'on a,
+        <b>Mahdi & Hajar<3 :</b> On a fait un effort et donné tout ce qu'on a,
         mais on n'a pas réussi à finir dans les temps.
     </p>
 
