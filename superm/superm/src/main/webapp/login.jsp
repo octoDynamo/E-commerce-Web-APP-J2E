@@ -1,13 +1,9 @@
 <%@ page import="com.example.superm.UserNow" %>
 <!DOCTYPE html>
 <%
-    // Reset user session
     UserNow.setRole(0);
     UserNow.user.setNom("");
     UserNow.user.setRole(0);
-
-    // Clear any existing session
-    session.invalidate();
 %>
 <html lang="fr">
 <head>
@@ -32,33 +28,42 @@
             box-sizing: border-box;
         }
 
-        /* Your existing animations */
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px);
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
             }
-            to {
+            50% {
+                transform: scale(1.05);
                 opacity: 1;
-                transform: scale(1) translateY(0);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
             }
         }
 
@@ -80,9 +85,10 @@
             background: rgba(255, 255, 255, 0.03);
             padding: 3rem;
             border-radius: 2rem;
-            box-shadow: 0 0 20px rgba(79, 70, 229, 0.15),
-            0 0 40px rgba(79, 70, 229, 0.1),
-            inset 0 0 80px rgba(79, 70, 229, 0.05);
+            box-shadow:
+                    0 0 20px rgba(79, 70, 229, 0.15),
+                    0 0 40px rgba(79, 70, 229, 0.1),
+                    inset 0 0 80px rgba(79, 70, 229, 0.05);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
@@ -93,6 +99,7 @@
             position: absolute;
             width: 150px;
             height: 150px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
             filter: blur(20px);
             opacity: 0.15;
             animation: pulse 4s ease-in-out infinite;
@@ -101,7 +108,6 @@
         .glow-top-right {
             top: -75px;
             right: -75px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
         }
 
         .glow-bottom-left {
@@ -114,6 +120,13 @@
             text-align: center;
             margin-bottom: 2.5rem;
             animation: float 6s ease-in-out infinite;
+        }
+
+        .logo-container img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(79, 70, 229, 0.5));
         }
 
         h1 {
@@ -133,12 +146,7 @@
             margin-bottom: 1.5rem;
             position: relative;
             z-index: 1;
-            animation: fadeInScale 0.6s ease-out forwards;
-            opacity: 0;
         }
-
-        .form-group:nth-child(1) { animation-delay: 0.2s; }
-        .form-group:nth-child(2) { animation-delay: 0.4s; }
 
         .form-group i {
             position: absolute;
@@ -156,6 +164,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1.2rem;
             font-size: 1rem;
+            font-weight: 400;
             color: var(--text-primary);
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
@@ -168,8 +177,9 @@
         .input-field:focus {
             outline: none;
             border-color: var(--primary-glow);
-            box-shadow: 0 0 15px rgba(79, 70, 229, 0.2),
-            inset 0 0 10px rgba(79, 70, 229, 0.1);
+            box-shadow:
+                    0 0 15px rgba(79, 70, 229, 0.2),
+                    inset 0 0 10px rgba(79, 70, 229, 0.1);
             background: rgba(255, 255, 255, 0.08);
         }
 
@@ -194,9 +204,6 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
-            animation: fadeInScale 0.6s ease-out forwards;
-            animation-delay: 0.6s;
-            opacity: 0;
         }
 
         .submit-btn::before {
@@ -206,7 +213,12 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(
+                    120deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.3),
+                    transparent
+            );
             transition: 0.6s;
         }
 
@@ -216,8 +228,9 @@
 
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 25px rgba(79, 70, 229, 0.4),
-            0 0 40px rgba(79, 70, 229, 0.2);
+            box-shadow:
+                    0 5px 25px rgba(79, 70, 229, 0.4),
+                    0 0 40px rgba(79, 70, 229, 0.2);
         }
 
         .links {
@@ -228,9 +241,6 @@
             gap: 2rem;
             position: relative;
             z-index: 1;
-            animation: fadeInScale 0.6s ease-out forwards;
-            animation-delay: 0.8s;
-            opacity: 0;
         }
 
         .links a {
@@ -248,13 +258,6 @@
             color: var(--text-primary);
             text-shadow: 0 0 10px var(--primary-glow);
             background: rgba(255, 255, 255, 0.05);
-        }
-
-        .error-message {
-            color: #ef4444;
-            text-align: center;
-            margin-bottom: 1rem;
-            animation: fadeInScale 0.6s ease-out forwards;
         }
 
         @media (max-width: 640px) {
@@ -276,6 +279,43 @@
                 gap: 1rem;
             }
         }
+
+        /* Animations améliorées */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .form-group {
+            animation: fadeInScale 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .submit-btn {
+            animation: fadeInScale 0.6s ease-out forwards;
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+
+        .links {
+            animation: fadeInScale 0.6s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -283,17 +323,10 @@
     <div class="glow-effect glow-top-right"></div>
     <div class="glow-effect glow-bottom-left"></div>
     <div class="logo-container">
-        <!-- Replace with your actual logo -->
-        <h1>ElectroShop</h1>
+        <img src="images/logo.svg" alt="ElectroShop Logo">
     </div>
-
-    <% if(request.getAttribute("error") != null) { %>
-    <div class="error-message">
-        <%= request.getAttribute("error") %>
-    </div>
-    <% } %>
-
-    <form method="post" action="LoginServlet">
+    <h1>Bienvenue</h1>
+    <form method="post" action="loginServlet">
         <div class="form-group">
             <input type="email" name="email" class="input-field" placeholder="Adresse email" required>
             <i class="fas fa-envelope"></i>
