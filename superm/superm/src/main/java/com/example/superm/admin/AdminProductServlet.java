@@ -1,15 +1,17 @@
 package com.example.superm.admin;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import DataAccessObject.ProduitDAO;
+import Entity.Produit;
+import com.example.superm.UserNow;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import com.example.superm.UserNow;
-import Entity.Produit;
-import DataAccessObject.ProduitDAO;
 
-@WebServlet(name = "AdminProduct", value = "/admin/products/*")
+@WebServlet("/admin/products/*")
 public class AdminProductServlet extends HttpServlet {
     private ProduitDAO produitDAO;
 
@@ -26,6 +28,10 @@ public class AdminProductServlet extends HttpServlet {
         }
 
         String action = request.getPathInfo();
+        if (action == null) {
+            action = "/list";
+        }
+
         try {
             switch (action) {
                 case "/new":
@@ -69,12 +75,12 @@ public class AdminProductServlet extends HttpServlet {
     private void listProducts(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         request.setAttribute("products", produitDAO.getAll());
-        request.getRequestDispatcher("/admin/products.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/productList.jsp").forward(request, response);
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -82,7 +88,7 @@ public class AdminProductServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Produit product = produitDAO.getById(id);
         request.setAttribute("product", product);
-        request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/productForm.jsp").forward(request, response);
     }
 
     private void insertProduct(HttpServletRequest request, HttpServletResponse response)
