@@ -1,12 +1,18 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Entity.Commande" %>
 <%@ page import="Entity.Produit" %>
-<%@ page import="com.example.superm.Command" %>
 <%@ page import="DataAccessObject.ProduitDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<Commande> commandeList = Command.get();
-    double sum = 0;
+    // Get the cart (list of Commande objects) from the session
+    List<Commande> commandeList = (List<Commande>) session.getAttribute("cart");
+    if (commandeList == null) {
+        commandeList = new ArrayList<>();
+    }
+
+    ProduitDAO produitDAO = new ProduitDAO();
+    double sum = 0; // Initialize the total sum
 %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -251,11 +257,13 @@
                 </thead>
                 <tbody>
                 <%
+                    // Loop through all the items in the cart
                     for (Commande cmd : commandeList) {
-                        Produit produit = new ProduitDAO().getById(cmd.getProduit_id());
+                        Produit produit = produitDAO.getById(cmd.getProduit_id()); // Fetch product details
                         if (produit != null) {
                             double prix = produit.getPrix();
                             double total = prix * cmd.getQuantite();
+                            sum += total; // Accumulate total price
                 %>
 
                 <tr>
@@ -263,6 +271,14 @@
                     <td><%= cmd.getQuantite() %></td>
                     <td><%= String.format("%.2f", prix) %> MAD</td>
                     <td><%= String.format("%.2f", total) %> MAD</td>
+                    <td>
+                        <form action="removeFromCart" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="<%= produit.getId() %>">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 <%
                         }

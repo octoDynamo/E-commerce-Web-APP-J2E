@@ -62,27 +62,18 @@ public class ProduitDAO {
     }
 
     public Produit getById(int id) throws SQLException {
-        String sql = "SELECT * FROM produits WHERE id = ?";
+        String sql = "SELECT id, nom, description, prix, image FROM produits WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Produit produit = new Produit();
-                    produit.setId(resultSet.getInt("id"));
-                    produit.setNom(resultSet.getString("nom"));
-                    produit.setDescription(resultSet.getString("description"));
-                    produit.setPrix(resultSet.getDouble("prix"));
-                    produit.setImage(resultSet.getString("image"));
-
-                    // Debugging logs
-                    System.out.println("Fetched Produit: ID=" + produit.getId() +
-                            ", Name=" + produit.getNom() + ", Price=" + produit.getPrix());
-                    return produit;
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowToProduit(rs);
                 }
             }
         }
         return null;
     }
+
 
     public void update(Produit produit) throws SQLException {
         String sql = "UPDATE produits SET nom = ?, description = ?, prix = ?, image = ? WHERE id = ?";

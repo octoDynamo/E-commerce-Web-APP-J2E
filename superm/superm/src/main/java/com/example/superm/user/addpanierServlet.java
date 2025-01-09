@@ -1,7 +1,9 @@
 package com.example.superm.user;
 
 import DataAccessObject.CommandeDAO;
+import DataAccessObject.ProduitDAO;
 import Entity.Commande;
+import Entity.Produit;
 import Entity.Utilisateur;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -10,15 +12,11 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "addpanier", value = "/addpanier")
 public class addpanierServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Redirect to the main page if accessed via GET
-        response.sendRedirect("index.jsp");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,48 +26,55 @@ public class addpanierServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantite"));
 
             // Retrieve the logged-in user from the session
-            HttpSession session = request.getSession(false); // Get existing session without creating a new one
+            HttpSession session = request.getSession(false);
             Utilisateur user = (session != null) ? (Utilisateur) session.getAttribute("user") : null;
 
             if (user != null) {
-                // Create a new Commande object
-                Commande commande = new Commande();
-                commande.setUtilisateur_id(user.getId());
-                commande.setProduit_id(productId);
-                commande.setQuantite(quantity);
-                commande.setDate(java.time.LocalDate.now().toString()); // Use current date dynamically
+                ProduitDAO produitDAO = new ProduitDAO();
+                Produit produit = produitDAO.getById(productId);
 
-                // Save the commande to the database
-                CommandeDAO commandeDAO = new CommandeDAO();
-                commandeDAO.create(commande);
+                if (produit == null) {
+                    response.sendRedirect("error.jsp?message=Produit%20inexistant");
+                    return;
+                }
 
-                // Debugging logs
-                System.out.println("Commande added successfully!");
-                System.out.println("User ID: " + user.getId());
-                System.out.println("Product ID: " + productId);
-                System.out.println("Quantity: " + quantity);
+                // Retrieve or initialize the cart
+                List<Commande> cart = (List<Commande>) session.getAttribute("cart");
+                if (cart == null) {
+                    cart = new ArrayList<>();
+                }
+
+                // Check if the product already exists in the cart
+                boolean exists = false;
+                for (Commande commande : cart) {
+                    if (commande.getProduit_id() == productId) {
+                        commande.setQuantite(commande.getQuantite() + quantity);
+                        exists = true;
+                        break;
+                    }
+                }
+
+                // Add a new item if it doesn't already exist in the cart
+                if (!exists) {
+                    Commande commande = new Commande();
+                    commande.setUtilisateur_id(user.getId());
+                    commande.setProduit_id(productId);
+                    commande.setQuantite(quantity);
+                    commande.setProduit(produit);
+                    commande.setDate(java.time.LocalDate.now().toString());
+                    cart.add(commande);
+                }
+
+                // Save the cart to the session
+                session.setAttribute("cart", cart);
 
                 // Redirect to the cart page
                 response.sendRedirect("panier.jsp");
             } else {
-                // If user is not logged in, redirect to login page
-                System.out.println("User is not logged in. Redirecting to login page.");
+                // If user is not logged in, redirect to login
                 response.sendRedirect("login.jsp");
             }
-        } catch (NumberFormatException e) {
-            // Handle invalid input parameters
-            System.err.println("Invalid input parameters: " + e.getMessage());
-            e.printStackTrace();
-            response.sendRedirect("error.jsp?message=Invalid%20input");
-        } catch (SQLException e) {
-            // Handle database-related errors
-            System.err.println("Database error: " + e.getMessage());
-            e.printStackTrace();
-            response.sendRedirect("error.jsp?message=Database%20error");
         } catch (Exception e) {
-            // Handle any unexpected errors
-            System.err.println("Unexpected error: " + e.getMessage());
-            e.printStackTrace();
             response.sendRedirect("error.jsp?message=Unexpected%20error");
         }
     }
