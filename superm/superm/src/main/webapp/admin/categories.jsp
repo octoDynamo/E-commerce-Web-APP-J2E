@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Entity.Categorie" %>
 <%@ page import="DataAccessObject.CategorieDAO" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <%
   // Fetch categories from the database
   CategorieDAO categorieDAO = new CategorieDAO();

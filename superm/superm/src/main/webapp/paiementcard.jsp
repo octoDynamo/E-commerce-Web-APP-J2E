@@ -3,6 +3,8 @@
 <%@ page import="com.example.superm.Command" %>
 <%@ page import="DataAccessObject.ProduitDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <%
     List<Commande> commandeList = Command.get();
     double sum = 0;
