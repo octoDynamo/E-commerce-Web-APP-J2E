@@ -236,7 +236,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="categories.jsp" class="nav-link">
+                <a href="admin/categories.jsp" class="nav-link">
                     <i class="fas fa-tags"></i>
                     <span>Catégories</span>
                 </a>

@@ -8,9 +8,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet("/addCategory")
-public class
-AddCategoryServlet extends HttpServlet {
+@WebServlet("/admin/addCategory")
+public class AddCategoryServlet extends HttpServlet {
     private CategorieDAO categorieDAO;
 
     @Override
@@ -28,6 +27,6 @@ AddCategoryServlet extends HttpServlet {
         categorie.setDescription(description);
 
         categorieDAO.addCategory(categorie);
-        response.sendRedirect("admin/categories.jsp");
+        response.sendRedirect("categories.jsp"); // Redirect to the categories page after adding
     }
 }
