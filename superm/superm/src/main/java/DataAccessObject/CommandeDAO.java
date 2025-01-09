@@ -1,7 +1,6 @@
 package DataAccessObject;
 
 import Entity.Commande;
-import com.example.superm.UserNow;
 import connectiondb.connectiondb;
 
 import java.sql.Connection;
@@ -22,11 +21,14 @@ public class CommandeDAO {
     public void create(Commande commande) throws SQLException {
         String sql = "INSERT INTO commandes (utilisateur_id, produit_id, quantite, date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, commande.getUtilisateur_id(UserNow.getUser().getId()));
+            statement.setInt(1, commande.getUtilisateur_id());
             statement.setInt(2, commande.getProduit_id());
             statement.setInt(3, commande.getQuantite());
             statement.setString(4, commande.getDate());
-            statement.executeUpdate();
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Command added to database successfully!");
+            }
         }
     }
 

@@ -13,7 +13,7 @@ public class Commande{
     public void setId(int id) {
         this.id = id;
     }
-    public int getUtilisateur_id(int id) {
+    public int getUtilisateur_id() {
         return utilisateur_id;
     }
     public void setUtilisateur_id(int utilisateur_id) {
