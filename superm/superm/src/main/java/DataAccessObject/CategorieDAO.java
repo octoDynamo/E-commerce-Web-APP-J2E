@@ -17,13 +17,13 @@ public class CategorieDAO {
     public List<Categorie> getAllCategories() {
         List<Categorie> categories = new ArrayList<>();
         try {
-            String query = "SELECT * FROM categories";
+            String query = "SELECT id, nom, description FROM categories";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
                 Categorie categorie = new Categorie();
                 categorie.setId(rs.getInt("id"));
-                categorie.setName(rs.getString("name"));
+                categorie.setName(rs.getString("nom"));
                 categorie.setDescription(rs.getString("description"));
                 categories.add(categorie);
             }
@@ -35,7 +35,7 @@ public class CategorieDAO {
 
     public void addCategory(Categorie categorie) {
         try {
-            String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+            String query = "INSERT INTO categories (nom, description) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, categorie.getName());
             preparedStatement.setString(2, categorie.getDescription());
@@ -44,6 +44,7 @@ public class CategorieDAO {
             e.printStackTrace();
         }
     }
+
 
     public void deleteCategory(int id) {
         try {
