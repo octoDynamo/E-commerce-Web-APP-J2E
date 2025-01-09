@@ -1,14 +1,25 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Entity.Commande" %>
-<%@ page import="com.example.superm.Command" %>
+<%@ page import="Entity.Produit" %>
 <%@ page import="DataAccessObject.ProduitDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page pageEncoding="UTF-8" %>
 <%
-    List<Commande> commandeList = Command.get();
-    double sum = 0;
+    // Retrieve cart items from session
+    List<Commande> commandeList = (List<Commande>) session.getAttribute("cart");
+    if (commandeList == null) {
+        commandeList = new ArrayList<>();
+    }
+
+    double sum = 0.0;
+    ProduitDAO produitDAO = new ProduitDAO();
+
     for (Commande cmd : commandeList) {
-        sum += cmd.getQuantite() * (new ProduitDAO().getById(cmd.getProduit_id()).getPrix());
+        Produit produit = produitDAO.getById(cmd.getProduit_id());
+        if (produit != null) {
+            sum += cmd.getQuantite() * produit.getPrix();
+        }
     }
 %>
 <!DOCTYPE html>
@@ -248,7 +259,7 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label for="cardNumber">Date d'expiration</label>
+                <label for="expiry">Date d'expiration</label>
                 <input type="text" id="expiry" class="input-field" placeholder="MM/AA" required>
                 <i class="fas fa-calendar"></i>
             </div>
