@@ -228,7 +228,7 @@
             <li class="nav-item">
                 <a href="index.jsp" class="nav-link active">
                     <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    <span>Produits</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -241,12 +241,6 @@
                 <a href="admin/categories.jsp" class="nav-link">
                     <i class="fas fa-tags"></i>
                     <span>Catégories</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="products.jsp" class="nav-link">
-                    <i class="fas fa-box"></i>
-                    <span>Produits</span>
                 </a>
             </li>
             <li class="nav-item">
