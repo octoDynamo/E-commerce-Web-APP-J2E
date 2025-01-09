@@ -21,14 +21,14 @@ public class CommandeDAO {
     public void create(Commande commande) throws SQLException {
         String sql = "INSERT INTO commandes (utilisateur_id, produit_id, quantite, date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, commande.getUtilisateur_id());
-            statement.setInt(2, commande.getProduit_id());
+            statement.setInt(1, commande.getUtilisateur_id()); // Check this value
+            statement.setInt(2, commande.getProduit_id()); // Check this value
             statement.setInt(3, commande.getQuantite());
             statement.setString(4, commande.getDate());
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Command added to database successfully!");
-            }
+            statement.executeUpdate();
+            System.out.println("Command added: UserID=" + commande.getUtilisateur_id() +
+                    ", ProductID=" + commande.getProduit_id() +
+                    ", Quantity=" + commande.getQuantite());
         }
     }
 
@@ -66,8 +66,19 @@ public class CommandeDAO {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Commande commande = mapRowToCommande(resultSet);
+                    Commande commande = new Commande();
+                    commande.setId(resultSet.getInt("id"));
+                    commande.setUtilisateur_id(resultSet.getInt("utilisateur_id"));
+                    commande.setProduit_id(resultSet.getInt("produit_id"));
+                    commande.setQuantite(resultSet.getInt("quantite"));
+                    commande.setDate(resultSet.getString("date"));
                     commandes.add(commande);
+
+                    // Debugging logs
+                    System.out.println("Fetched Command: ID=" + commande.getId() +
+                            ", UserID=" + commande.getUtilisateur_id() +
+                            ", ProductID=" + commande.getProduit_id() +
+                            ", Quantity=" + commande.getQuantite());
                 }
             }
         }

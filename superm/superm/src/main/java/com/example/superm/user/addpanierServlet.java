@@ -37,13 +37,14 @@ public class addpanierServlet extends HttpServlet {
                 commande.setUtilisateur_id(user.getId());
                 commande.setProduit_id(productId);
                 commande.setQuantite(quantity);
-                commande.setDate(LocalDate.now().toString()); // Use current date dynamically
+                commande.setDate(java.time.LocalDate.now().toString()); // Use current date dynamically
 
                 // Save the commande to the database
                 CommandeDAO commandeDAO = new CommandeDAO();
                 commandeDAO.create(commande);
 
-                // Debugging logs (optional)
+                // Debugging logs
+                System.out.println("Commande added successfully!");
                 System.out.println("User ID: " + user.getId());
                 System.out.println("Product ID: " + productId);
                 System.out.println("Quantity: " + quantity);
@@ -51,19 +52,23 @@ public class addpanierServlet extends HttpServlet {
                 // Redirect to the cart page
                 response.sendRedirect("panier.jsp");
             } else {
-                // Redirect to login if the user is not logged in
+                // If user is not logged in, redirect to login page
+                System.out.println("User is not logged in. Redirecting to login page.");
                 response.sendRedirect("login.jsp");
             }
         } catch (NumberFormatException e) {
             // Handle invalid input parameters
+            System.err.println("Invalid input parameters: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect("error.jsp?message=Invalid%20input");
         } catch (SQLException e) {
             // Handle database-related errors
+            System.err.println("Database error: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect("error.jsp?message=Database%20error");
         } catch (Exception e) {
             // Handle any unexpected errors
+            System.err.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect("error.jsp?message=Unexpected%20error");
         }

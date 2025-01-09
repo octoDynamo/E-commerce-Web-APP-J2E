@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Entity.Commande" %>
+<%@ page import="Entity.Produit" %>
 <%@ page import="com.example.superm.Command" %>
 <%@ page import="DataAccessObject.ProduitDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -243,31 +244,33 @@
                 <tr>
                     <th>Produit</th>
                     <th>Quantité</th>
-                    <th>Prix (MAD)</th>
+                    <th>Prix Unitaire (MAD)</th>
+                    <th>Total (MAD)</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% for (Commande cmd : commandeList) {
-                    double prix = new ProduitDAO().getById(cmd.getProduit_id()).getPrix();
-                    sum += cmd.getQuantite() * prix;
+                <%
+                    for (Commande cmd : commandeList) {
+                        Produit produit = new ProduitDAO().getById(cmd.getProduit_id());
+                        if (produit != null) {
+                            double prix = produit.getPrix();
+                            double total = prix * cmd.getQuantite();
                 %>
+
                 <tr>
-                    <td><%= new ProduitDAO().getById(cmd.getProduit_id()).getNom() %></td>
+                    <td><%= produit.getNom() %></td>
                     <td><%= cmd.getQuantite() %></td>
                     <td><%= String.format("%.2f", prix) %> MAD</td>
-                    <td>
-                        <form method="post" action="deleteCommande.jsp">
-                            <input type="hidden" name="id" value="<%= cmd.getId() %>">
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-trash-alt"></i> Supprimer
-                            </button>
-                        </form>
-                    </td>
+                    <td><%= String.format("%.2f", total) %> MAD</td>
                 </tr>
-                <% } %>
+                <%
+                        }
+                    }
+                %>
                 </tbody>
             </table>
+            <p>Total: <%= String.format("%.2f", sum) %> MAD</p>
         </div>
     </div>
 
@@ -285,7 +288,7 @@
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
                 <input type="hidden" name="cmd" value="_xclick">
                 <input type="hidden" name="business" value="workoutaiman@hotmail.com">
-                <input type="hidden" name="item_name" value="aimht">
+                <input type="hidden" name="item_name" value="ElectroShop Cart Total">
                 <input type="hidden" name="amount" value="<%= String.format("%.2f", sum / 10) %>">
                 <input type="hidden" name="currency_code" value="EUR">
                 <button type="submit" class="btn btn-primary">

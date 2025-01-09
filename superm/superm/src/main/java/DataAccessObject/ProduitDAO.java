@@ -63,16 +63,25 @@ public class ProduitDAO {
 
     public Produit getById(int id) throws SQLException {
         String sql = "SELECT * FROM produits WHERE id = ?";
-        Produit produit = null;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    produit = mapRowToProduit(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Produit produit = new Produit();
+                    produit.setId(resultSet.getInt("id"));
+                    produit.setNom(resultSet.getString("nom"));
+                    produit.setDescription(resultSet.getString("description"));
+                    produit.setPrix(resultSet.getDouble("prix"));
+                    produit.setImage(resultSet.getString("image"));
+
+                    // Debugging logs
+                    System.out.println("Fetched Produit: ID=" + produit.getId() +
+                            ", Name=" + produit.getNom() + ", Price=" + produit.getPrix());
+                    return produit;
                 }
             }
         }
-        return produit;
+        return null;
     }
 
     public void update(Produit produit) throws SQLException {
