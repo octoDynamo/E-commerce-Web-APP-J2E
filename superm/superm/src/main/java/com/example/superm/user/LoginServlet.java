@@ -2,7 +2,6 @@ package com.example.superm.user;
 
 import DataAccessObject.UtilisateurDAO;
 import Entity.Utilisateur;
-import com.example.superm.UserNow;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -15,7 +14,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Optional: Redirect to the login page if accessed via GET
+        // Redirect to the login page if accessed via GET
         response.sendRedirect("login.jsp");
     }
 
@@ -23,6 +22,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String remember = request.getParameter("remember"); // Checkbox for "Remember Me"
 
         try {
             Utilisateur user = new UtilisateurDAO().getByEmailAndPassword(email, password);
@@ -36,19 +36,19 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
                 session.setAttribute("role", user.getRole());
 
-                // Determine redirection based on user role
-                int role = user.getRole();
-                switch (role) {
-                    case 1: // Admin
-                        response.sendRedirect("dashboard.jsp");
-                        break;
-                    case 2: // Regular User
-                        response.sendRedirect("index.jsp");
-                        break;
-                    default:
-                        response.sendRedirect("login.jsp?error=unknownRole");
-                        break;
+                // Handle "Remember Me" functionality
+                if ("on".equals(remember)) {
+                    Cookie userCookie = new Cookie("userEmail", user.getEmail());
+                    userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                    response.addCookie(userCookie);
+
+                    Cookie roleCookie = new Cookie("userRole", String.valueOf(user.getRole()));
+                    roleCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                    response.addCookie(roleCookie);
                 }
+
+                // Redirect to the index page
+                response.sendRedirect("index.jsp");
             }
         } catch (SQLException e) {
             // Log the exception and redirect to an error page

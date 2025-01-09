@@ -61,6 +61,15 @@
             padding: 1rem 0;
         }
 
+        .navbar .container {
+            max-width: 1200px; /* Restrict navbar width */
+            margin: 0 auto; /* Center the navbar horizontally */
+            padding: 0 1rem; /* Horizontal padding for spacing */
+            display: flex; /* Flexbox layout */
+            align-items: center; /* Align items vertically */
+            justify-content: space-between; /* Align items to left and right */
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -91,6 +100,34 @@
         .nav-link:hover {
             color: var(--text-primary);
             text-shadow: 0 0 10px var(--primary-glow);
+        }
+        .navbar .user-info {
+            display: flex; /* Flex layout for user info */
+            align-items: center; /* Align vertically */
+            gap: 1rem; /* Space between icon and text */
+        }
+
+        .navbar .user-icon {
+            font-size: 1.5rem; /* Icon size */
+            color: #4f46e5; /* Primary color for icon */
+        }
+
+        .navbar .user-name {
+            font-size: 1rem; /* Font size for user name */
+            color: #ffffff; /* Text color */
+            font-weight: 500; /* Medium font weight */
+        }
+
+        .navbar .logout-link {
+            font-size: 0.9rem; /* Font size for logout link */
+            color: rgba(255, 255, 255, 0.8); /* Subtle text color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s ease; /* Smooth transition */
+        }
+
+        .navbar .logout-link:hover {
+            color: #ffffff; /* Highlighted color on hover */
+            text-shadow: 0 0 10px rgba(79, 70, 229, 0.7); /* Glow effect */
         }
 
         .banner-section {
@@ -237,24 +274,30 @@
 <body>
 <nav class="navbar">
     <div class="container">
+        <!-- Left: Navigation Links -->
         <div class="nav-brand">ElectroShop</div>
         <div class="nav-links">
             <a href="index.jsp" class="nav-link">Accueil</a>
             <a href="panier.jsp" class="nav-link">Panier</a>
-            <a href="login.jsp" class="nav-link">
-                <% if (UserNow.getRole()!=0) { %>
-                Déconnexion
-                <% } else { %>
-                Connexion
-                <% } %>
-            </a>
-            <span class="nav-link">
-                    <%= UserNow.getUser().getNom()+" "+UserNow.getUser().getPrenom() %>
+        </div>
+
+        <!-- Right: User Info -->
+        <div class="user-info">
+            <%
+                Entity.Utilisateur user = (Entity.Utilisateur) session.getAttribute("user");
+                if (user != null) {
+            %>
+            <i class="fa-solid fa-user user-icon"></i>
+            <span class="user-name">
+                    Bienvenue, <%= user.getNom() %> <%= user.getPrenom() %>!
                 </span>
+            <a href="logout.jsp" class="logout-link">(Déconnexion)</a>
+            <% } else { %>
+            <a href="login.jsp" class="login-link">Connexion</a>
+            <% } %>
         </div>
     </div>
 </nav>
-
 <section class="banner-section">
     <div class="container">
         <div class="banner-grid">

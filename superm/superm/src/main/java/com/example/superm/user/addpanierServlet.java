@@ -2,7 +2,6 @@ package com.example.superm.user;
 
 import DataAccessObject.CommandeDAO;
 import Entity.Commande;
-import com.example.superm.Command;
 import com.example.superm.UserNow;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -15,30 +14,53 @@ import java.sql.SQLException;
 public class addpanierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // Redirect to the main page if accessed via GET
+        response.sendRedirect("index.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        int quantite = Integer.parseInt(request.getParameter("quantite"));
-        if(UserNow.getRole()!=0){
-            Commande Cmd = new Commande();
-            Cmd.setUtilisateur_id(UserNow.getUser().getId());
-            Cmd.setProduit_id(id);
-            Cmd.setQuantite(quantite);
-            Cmd.setDate("2023-01-30");
-            Command.add(Cmd);
-            System.out.println(UserNow.getUser().getId());
-            try {
-                new CommandeDAO().create(Cmd);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            response.sendRedirect("panier.jsp");
-        }else{
-            response.sendRedirect("login.jsp");
-        }
+        try {
+            // Parse input parameters
+            int productId = Integer.parseInt(request.getParameter("id"));
+            int quantity = Integer.parseInt(request.getParameter("quantite"));
 
+            // Check if the user is logged in
+            if (UserNow.getRole() != 0) {
+                // Create a new Commande object
+                Commande commande = new Commande();
+                commande.setUtilisateur_id(UserNow.getUser().getId());
+                commande.setProduit_id(productId);
+                commande.setQuantite(quantity);
+                commande.setDate("2025-01-30"); // Hardcoded date, consider dynamic date if possible
+
+                // Save the commande to the database
+                CommandeDAO commandeDAO = new CommandeDAO();
+                commandeDAO.create(commande);
+
+                // Debugging logs (optional)
+                System.out.println("User ID: " + UserNow.getUser().getId());
+                System.out.println("Product ID: " + productId);
+                System.out.println("Quantity: " + quantity);
+
+                // Redirect to the cart page
+                response.sendRedirect("panier.jsp");
+            } else {
+                // Redirect to login if the user is not logged in
+                response.sendRedirect("login.jsp");
+            }
+        } catch (NumberFormatException e) {
+            // Handle invalid input parameters
+            e.printStackTrace();
+            response.sendRedirect("error.jsp?message=Invalid%20input");
+        } catch (SQLException e) {
+            // Handle database-related errors
+            e.printStackTrace();
+            response.sendRedirect("error.jsp?message=Database%20error");
+        } catch (Exception e) {
+            // Handle any unexpected errors
+            e.printStackTrace();
+            response.sendRedirect("error.jsp?message=Unexpected%20error");
+        }
     }
 }
