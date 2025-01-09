@@ -4,15 +4,32 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="Entity.Commande" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 
 <%
+    // Fetch all products
     List<Produit> produitList = new ArrayList<>();
     try {
         produitList = new ProduitDAO().getAll();
     } catch (SQLException e) {
         throw new RuntimeException(e);
+    }
+
+    // Fetch cart size for the "Panier" link
+    List<Commande> cart = (List<Commande>) session.getAttribute("cart");
+    int cartCount = (cart != null) ? cart.size() : 0;
+
+    // Fetch payment success message (if any)
+    String paymentSuccess = (String) session.getAttribute("paymentSuccess");
+    if (paymentSuccess != null) {
+%>
+<div class="alert alert-success" style="background: #4caf50; color: white; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+    <%= paymentSuccess %>
+</div>
+<%
+        session.removeAttribute("paymentSuccess"); // Clear the message after displaying
     }
 %>
 <!DOCTYPE html>
@@ -274,13 +291,22 @@
     </style>
 </head>
 <body>
+<% if (paymentSuccess != null) { %>
+<script>
+    alert("<%= paymentSuccess %>");
+</script>
+<%
+    // Clear the message from the session after displaying it
+    session.removeAttribute("paymentSuccess");
+%>
+<% } %>
 <nav class="navbar">
     <div class="container">
         <!-- Left: Navigation Links -->
         <div class="nav-brand">ElectroShop</div>
         <div class="nav-links">
             <a href="index.jsp" class="nav-link">Accueil</a>
-            <a href="panier.jsp" class="nav-link">Panier</a>
+            <a href="panier.jsp" class="nav-link">Panier (<%= cartCount %>)</a>
         </div>
 
         <!-- Right: User Info -->
@@ -291,8 +317,8 @@
             %>
             <i class="fa-solid fa-user user-icon"></i>
             <span class="user-name">
-                    Bienvenue, <%= user.getNom() %> <%= user.getPrenom() %>!
-                </span>
+                Bienvenue, <%= user.getNom() %> <%= user.getPrenom() %>!
+            </span>
             <a href="logout.jsp" class="logout-link">(Déconnexion)</a>
             <% } else { %>
             <a href="login.jsp" class="login-link">Connexion</a>

@@ -244,7 +244,7 @@
         </div>
     </div>
 
-    <form action="" method="post">
+    <form action="PaymentServlet" method="post">
         <div class="form-group">
             <label for="cardName">Nom sur la carte</label>
             <input type="text" id="cardName" class="input-field" placeholder="Ex: Jean Dupont" required>
