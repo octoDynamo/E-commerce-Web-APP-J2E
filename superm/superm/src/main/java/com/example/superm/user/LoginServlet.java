@@ -13,45 +13,34 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Redirect to the login page if accessed via GET
-        response.sendRedirect("login.jsp");
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String remember = request.getParameter("remember"); // Checkbox for "Remember Me"
 
         try {
-            Utilisateur user = new UtilisateurDAO().getByEmailAndPassword(email, password);
+            UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+            Utilisateur user = utilisateurDAO.getByEmailAndPassword(email, password);
 
             if (user == null) {
-                // Redirect back to login page with an error message
+                // Rediriger vers la page de connexion avec un message d'erreur
                 response.sendRedirect("login.jsp?error=invalid");
             } else {
-                // Set user session attributes
+                // Créer une session pour l'utilisateur
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 session.setAttribute("role", user.getRole());
 
-                // Handle "Remember Me" functionality
-                if ("on".equals(remember)) {
-                    Cookie userCookie = new Cookie("userEmail", user.getEmail());
-                    userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-                    response.addCookie(userCookie);
-
-                    Cookie roleCookie = new Cookie("userRole", String.valueOf(user.getRole()));
-                    roleCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-                    response.addCookie(roleCookie);
+                // Redirection basée sur le rôle
+                if (user.getRole() == 1) { // Admin
+                    response.sendRedirect("dashboard.jsp");
+                } else if (user.getRole() == 2) { // Utilisateur classique
+                    response.sendRedirect("index.jsp");
+                } else {
+                    // Rôle inconnu
+                    response.sendRedirect("error.jsp?message=Rôle%20inconnu");
                 }
-
-                // Redirect to the index page
-                response.sendRedirect("index.jsp");
             }
         } catch (SQLException e) {
-            // Log the exception and redirect to an error page
             e.printStackTrace();
             response.sendRedirect("error.jsp");
         }

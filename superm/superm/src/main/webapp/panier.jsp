@@ -4,7 +4,6 @@
 <%@ page import="DataAccessObject.ProduitDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 <%
     // Get the cart (list of Commande objects) from the session
@@ -16,6 +15,8 @@
     ProduitDAO produitDAO = new ProduitDAO();
     double sum = 0; // Initialize the total sum
 %>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

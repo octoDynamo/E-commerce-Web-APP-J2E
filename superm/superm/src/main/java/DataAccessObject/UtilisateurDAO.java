@@ -11,6 +11,7 @@ public class UtilisateurDAO {
 
     private Connection connection;
 
+    // Constructor to initialize database connection
     public UtilisateurDAO() {
         this.connection = connectiondb.getConnection();
     }
@@ -25,6 +26,9 @@ public class UtilisateurDAO {
             stmt.setString(4, utilisateur.getMotDePasse());
             stmt.setInt(5, utilisateur.getRole()); // Dynamic role
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error adding user: " + e.getMessage());
         }
     }
 
@@ -38,6 +42,9 @@ public class UtilisateurDAO {
                 Utilisateur utilisateur = mapRowToUtilisateur(rs);
                 utilisateurs.add(utilisateur);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving all users: " + e.getMessage());
         }
         return utilisateurs;
     }
@@ -45,32 +52,36 @@ public class UtilisateurDAO {
     // Retrieve user by ID
     public Utilisateur getById(int id) throws SQLException {
         String query = "SELECT * FROM utilisateurs WHERE id = ?";
-        Utilisateur utilisateur = null;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    utilisateur = mapRowToUtilisateur(rs);
+                    return mapRowToUtilisateur(rs);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving user by ID: " + e.getMessage());
         }
-        return utilisateur;
+        return null;
     }
 
     // Retrieve user by email and password
     public Utilisateur getByEmailAndPassword(String email, String password) throws SQLException {
         String query = "SELECT * FROM utilisateurs WHERE email = ? AND mot_de_passe = ?";
-        Utilisateur utilisateur = null;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, email);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    utilisateur = mapRowToUtilisateur(rs);
+                    return mapRowToUtilisateur(rs);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving user by email and password: " + e.getMessage());
         }
-        return utilisateur;
+        return null;
     }
 
     // Count total users
@@ -81,6 +92,9 @@ public class UtilisateurDAO {
             if (rs.next()) {
                 return rs.getInt("count");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error counting users: " + e.getMessage());
         }
         return 0;
     }
@@ -91,6 +105,9 @@ public class UtilisateurDAO {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error deleting user by ID: " + e.getMessage());
         }
     }
 
@@ -106,6 +123,9 @@ public class UtilisateurDAO {
                     utilisateurs.add(utilisateur);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error searching users by name: " + e.getMessage());
         }
         return utilisateurs;
     }
