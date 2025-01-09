@@ -276,7 +276,7 @@
                     <td><%= String.format("%.2f", total) %> MAD</td>
                     <td>
                         <form action="removeFromCart" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= produit.getId() %>">
+                            <input type="hidden" name="id" value="<%= cmd.getProduit_id() %>">
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-trash"></i> Supprimer
                             </button>
