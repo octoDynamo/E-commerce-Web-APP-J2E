@@ -232,7 +232,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="users.jsp" class="nav-link">
+                <a href="admin/users.jsp" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Utilisateurs</span>
                 </a>
@@ -244,7 +244,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="orders.jsp" class="nav-link">
+                <a href="admin/orders.jsp" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Commandes</span>
                 </a>
