@@ -325,7 +325,7 @@
     <div class="glow-effect glow-top-right"></div>
     <div class="glow-effect glow-bottom-left"></div>
     <div class="logo-container">
-        <img src="images/logo.svg" alt="ElectroShop Logo">
+        <img src="images/logo.svg" alt="">
     </div>
     <h1>Bienvenue</h1>
     <form method="post" action="loginServlet">

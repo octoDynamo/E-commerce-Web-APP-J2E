@@ -8,7 +8,8 @@ public class Produit {
     private String description;
     private Double prix;
     private String image;
-
+    private int quantite; // New field
+    private String categorie; // New field
     public Produit() {
     }
 
@@ -51,5 +52,20 @@ public class Produit {
     public void setImage(String image) {
         this.image = image;
     }
-}
 
+    public int getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+}
