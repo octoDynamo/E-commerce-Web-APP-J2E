@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Redirection basée sur le rôle
                 if (user.getRole() == 1) { // Admin
-                    response.sendRedirect("dashboard.jsp");
+                    response.sendRedirect("admin/dashboard.jsp");
                 } else if (user.getRole() == 2) { // Utilisateur classique
                     response.sendRedirect("index.jsp");
                 } else {
