@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UtilisateurDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     // Constructor to initialize database connection
     public UtilisateurDAO() {
@@ -30,6 +30,23 @@ public class UtilisateurDAO {
             e.printStackTrace();
             throw new SQLException("Error adding user: " + e.getMessage());
         }
+    }
+
+    // Check if a user with the given email already exists
+    public boolean existsByEmail(String email) throws SQLException {
+        String query = "SELECT COUNT(*) AS count FROM utilisateurs WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count") > 0; // Return true if count > 0
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error checking if email exists: " + e.getMessage());
+        }
+        return false;
     }
 
     // Retrieve all users

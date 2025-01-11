@@ -274,6 +274,24 @@
 
     <h1>Créer un compte</h1>
 
+    <!-- Display error messages dynamically -->
+    <%
+        String error = request.getParameter("error");
+        if ("email_exists".equals(error)) {
+    %>
+    <div style="color: red; text-align: center; margin-bottom: 1.5rem;">
+        Un compte avec cet email existe déjà.
+    </div>
+    <%
+    } else if ("password_mismatch".equals(error)) {
+    %>
+    <div style="color: red; text-align: center; margin-bottom: 1.5rem;">
+        Les mots de passe ne correspondent pas.
+    </div>
+    <%
+        }
+    %>
+
     <form method="post" action="RegisterServlet">
         <div class="form-grid">
             <div class="form-group">
