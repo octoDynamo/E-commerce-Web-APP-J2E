@@ -32,7 +32,43 @@
             color: var(--text-primary);
             min-height: 100vh;
         }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            filter: blur(90px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .glow-1 {
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+        }
+
+        .glow-2 {
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+        }
         .dashboard {
             display: flex;
             min-height: 100vh;
@@ -213,48 +249,18 @@
     </style>
 </head>
 <body>
-<div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fas fa-bolt"></i>
-            </div>
-            <span class="brand-text">ElectroShop</span>
-        </div>
 
-        <nav class="nav-menu">
-            <a href="${pageContext.request.contextPath}/admin/dashboard.jsp" class="nav-link">
-                <i class="fas fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/users.jsp" class="nav-link">
-                <i class="fas fa-users"></i>
-                <span>Utilisateurs</span>
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/products.jsp" class="nav-link active">
-                <i class="fas fa-box"></i>
-                <span>Produits</span>
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/categories.jsp" class="nav-link">
-                <i class="fas fa-tags"></i>
-                <span>Catégories</span>
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="nav-link">
-                <i class="fas fa-shopping-cart"></i>
-                <span>Commandes</span>
-            </a>
-        </nav>
-    </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <div class="container">  <!-- Add container for centering -->
         <div class="header">
             <h1>Ajouter un Produit</h1>
             <p class="text-secondary">Créez un nouveau produit dans votre catalogue</p>
         </div>
 
         <div class="form-container">
+            <div class="glow-effect glow-1"></div>
+            <div class="glow-effect glow-2"></div>
             <form action="${pageContext.request.contextPath}/admin/ProductServlet" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Nom du produit</label>

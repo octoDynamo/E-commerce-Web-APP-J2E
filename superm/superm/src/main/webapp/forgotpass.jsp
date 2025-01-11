@@ -221,9 +221,19 @@
 
 	<h2>Vérification du mot de passe</h2>
 
-	<form action="index.html" method="post">
+	<!-- Display error messages dynamically -->
+	<%
+		String error = request.getParameter("error");
+		if ("email_not_found".equals(error)) {
+	%>
+	<div style="color: red; text-align: center; margin-bottom: 1.5rem;">
+		Cet email n'existe pas.
+	</div>
+	<% } %>
+
+	<form action="ForgotPasswordServlet" method="post">
 		<div class="form-group">
-			<input type="email" class="input-field" placeholder="Votre adresse email" required>
+			<input type="email" name="email" class="input-field" placeholder="Votre adresse email" required>
 			<i class="fas fa-envelope"></i>
 		</div>
 

@@ -158,4 +158,14 @@ public class UtilisateurDAO {
         utilisateur.setRole(rs.getInt("role"));
         return utilisateur;
     }
+
+    public void updatePasswordByEmail(String email, String newPassword) throws SQLException {
+        String query = "UPDATE utilisateurs SET mot_de_passe = ? WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newPassword);
+            stmt.setString(2, email);
+            stmt.executeUpdate();
+        }
+    }
+
 }

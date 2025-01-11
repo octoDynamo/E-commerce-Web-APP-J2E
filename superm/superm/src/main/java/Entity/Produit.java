@@ -61,6 +61,10 @@ public class Produit {
         this.quantite = quantite;
     }
 
+    // Check if the product is out of stock
+    public boolean isOutOfStock() {
+        return quantite <= 0;
+    }
     public String getCategorie() {
         return categorie;
     }

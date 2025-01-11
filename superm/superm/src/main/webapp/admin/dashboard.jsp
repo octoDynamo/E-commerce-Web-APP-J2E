@@ -249,6 +249,10 @@
                 <i class="fas fa-shopping-cart"></i>
                 <span>Commandes</span>
             </a>
+            <a href="${pageContext.request.contextPath}/admin/stockShortages.jsp" class="nav-link">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Ruptures de Stock</span>
+            </a>
         </nav>
     </aside>
 
