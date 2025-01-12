@@ -349,20 +349,27 @@
     <div class="container">
         <h2 class="section-title">Nos Produits</h2>
         <div class="products-grid">
-            <% for(Produit P : produitList) { %>
+            <% for(Produit produit : produitList) { %>
             <div class="product-card">
                 <div class="glow-effect" style="background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);"></div>
-                <img src="<%= P.getImage() %>" alt="<%= P.getNom() %>" class="product-image">
-                <h3 class="product-title"><%= P.getNom() %></h3>
-                <p class="product-description"><%= P.getDescription() %></p>
-                <div class="product-price"><%= P.getPrix() %> MAD</div>
+                <img src="<%= produit.getImage() %>" alt="<%= produit.getNom() %>" class="product-image">
+                <h3 class="product-title"><%= produit.getNom() %></h3>
+                <p class="product-description"><%= produit.getDescription() %></p>
+                <div class="product-price"><%= produit.getPrix() %> MAD</div>
+                <!-- Stock Validation -->
+                <% if (produit.getQuantite() > 0) { %>
                 <form action="addpanier" method="post" class="add-to-cart-form">
-                    <input type="hidden" name="id" value="<%= P.getId() %>">
-                    <input type="number" name="quantite" value="1" min="1" class="quantity-input">
+                    <input type="hidden" name="id" value="<%= produit.getId() %>">
+                    <input type="number" name="quantite" value="1" min="1" max="<%= produit.getQuantite() %>" class="quantity-input">
                     <button type="submit" class="add-to-cart">
                         <i class="fas fa-cart-plus"></i> Ajouter
                     </button>
                 </form>
+                <% } else { %>
+                <div style="color: red; font-weight: bold;">Indisponible</div>
+                <% } %>
+
+
             </div>
             <% } %>
         </div>

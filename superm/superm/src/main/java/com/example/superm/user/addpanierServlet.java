@@ -5,13 +5,12 @@ import DataAccessObject.ProduitDAO;
 import Entity.Commande;
 import Entity.Produit;
 import Entity.Utilisateur;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,15 @@ public class addpanierServlet extends HttpServlet {
                 Produit produit = produitDAO.getById(productId);
 
                 if (produit == null) {
-                    response.sendRedirect("error.jsp?message=Produit%20inexistant");
+                    // Redirect with a product not found error
+                    response.sendRedirect("products.jsp?error=product_not_found");
+                    return;
+                }
+
+                // Check product stock
+                if (produit.getQuantite() <= 0) {
+                    // Redirect with an out-of-stock error
+                    response.sendRedirect("products.jsp?error=out_of_stock");
                     return;
                 }
 
@@ -48,6 +55,11 @@ public class addpanierServlet extends HttpServlet {
                 boolean exists = false;
                 for (Commande commande : cart) {
                     if (commande.getProduit_id() == productId) {
+                        // Check if the added quantity exceeds stock
+                        if (commande.getQuantite() + quantity > produit.getQuantite()) {
+                            response.sendRedirect("products.jsp?error=stock_exceeded");
+                            return;
+                        }
                         commande.setQuantite(commande.getQuantite() + quantity);
                         exists = true;
                         break;
@@ -56,6 +68,10 @@ public class addpanierServlet extends HttpServlet {
 
                 // Add a new item if it doesn't already exist in the cart
                 if (!exists) {
+                    if (quantity > produit.getQuantite()) {
+                        response.sendRedirect("products.jsp?error=stock_exceeded");
+                        return;
+                    }
                     Commande commande = new Commande();
                     commande.setUtilisateur_id(user.getId());
                     commande.setProduit_id(productId);
@@ -74,7 +90,11 @@ public class addpanierServlet extends HttpServlet {
                 // If user is not logged in, redirect to login
                 response.sendRedirect("login.jsp");
             }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("products.jsp?error=invalid_quantity");
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect("error.jsp?message=Unexpected%20error");
         }
     }
